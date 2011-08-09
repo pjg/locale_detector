@@ -8,6 +8,11 @@ The HTTP_ACCEPT_LANGUAGE header parser is based on:
 https://github.com/iain/http_accept_language/blob/master/lib/http_accept_language.rb
 
 
+## Requirements
+
+Rails 3.0+
+
+
 ## Installation
 
 Install the gem
