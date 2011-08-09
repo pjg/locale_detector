@@ -1,5 +1,7 @@
+require "locale_detector/filter"
 require "locale_detector/version"
 
+# Make it a Railtie
 module LocaleDetector
-  # Your code goes here...
+  require 'locale_detector/railtie' if defined?(Rails)
 end
