@@ -18,7 +18,27 @@ module LocaleDetector
           y.last.to_f <=> x.last.to_f
         end.first.first.gsub(/-[a-z]+$/i, '').downcase
       rescue # rescue (anything) from the malformed (or missing) accept language headers
-        LocaleDetector.fallback_locale
+
+        # parse request.host and try to set the locale based on toplevel domain suffix (for netbots mostly)
+        suffix = request.host.split('.').last
+
+        # somewhat incomplete list of more common toplevel domains
+        if [:bg, :be, :cn, :cz, :da, :de, :es, :et, :fi, :fr, :gr, :hi, :hr, :hu, :is, :it, :jp, :ko, :lv, :lt,
+            :mk, :nl, :no, :pl, :pt, :ro, :ru, :se, :sr, :sk, :sl, :tr, :vi, :ua].include?(suffix.to_sym)
+          suffix
+        # some common international/English domains
+        elsif [:eu, :uk, :us].include?(suffix.to_sym)
+          'en'
+        # Spanish speaking countries
+        elsif [:ar, :cl, :co, :cu, :mx].include?(suffix.to_sym)
+          'es'
+        # Portuguese speaking countries
+        elsif suffix == 'br'
+          'pt'
+        # fall back to fallback_locale for .com and all other domains ('en' by default)
+        else
+          LocaleDetector.fallback_locale
+        end
       end
     end
   end
