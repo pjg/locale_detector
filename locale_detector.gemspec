@@ -21,4 +21,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', ['>= 3.0.0']
   s.add_dependency 'i18n', ['>= 0.5.0']
+  s.add_development_dependency 'guard', ['>= 0.5.0']
+  s.add_development_dependency 'guard-rspec', ['>= 0.4.0']
+  s.add_development_dependency 'rspec', ['>= 2.6']
+  s.add_development_dependency 'rspec-rails', ['>= 2.6']
 end
