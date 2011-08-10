@@ -16,7 +16,6 @@ describe LocaleDetector::Filter do
   end
 
   context "http header locale setting" do
-
     specify { set_locale(:language => 'pl').should eql('pl') }
 
     specify { set_locale(:language => 'pl-PL').should eql('pl') }
@@ -26,11 +25,9 @@ describe LocaleDetector::Filter do
     specify { set_locale(:language => 'lt,en-us;q=0.8,en;q=0.6,ru;q=0.4,pl;q=0.2').should eql('lt') }
 
     specify { set_locale(:language => 'pl-PL;q=0.1,en-us;q=0.7,en;q=0.3').should eql('en') }
-
   end
 
   context "host based locale setting" do
-
     specify { set_locale(:host => 'example.pl').should eql('pl') }
 
     specify { set_locale(:host => 'example.co.uk').should eql('en') }
@@ -39,16 +36,17 @@ describe LocaleDetector::Filter do
 
     specify { set_locale(:host => 'example.br').should eql('pt') }
 
+    specify { set_locale(:host => 'example.jp').should eql('ja') }
+
+    specify { set_locale(:host => 'example.se').should eql('sv') }
   end
 
   context "default fallback" do
-
     before do
       I18n.default_locale = 'de'
     end
 
     specify { set_locale(:host => 'example.com').should eql('de') }
-
   end
 
 end
