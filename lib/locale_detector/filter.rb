@@ -35,9 +35,9 @@ module LocaleDetector
         # Portuguese speaking countries
         elsif suffix == 'br'
           'pt'
-        # fall back to fallback_locale for .com and all other domains ('en' by default)
+        # fall back for .com and all other domains
         else
-          LocaleDetector.fallback_locale
+          I18n.default_locale.to_s
         end
       end
     end

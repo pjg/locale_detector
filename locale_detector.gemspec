@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["pawel.goscicki@gmail.com"]
   s.homepage    = "https://github.com/Exvo/locale_detector"
   s.summary     = "Rails gem setting the I18n.locale based on user's browser language"
-  s.description = "Parses HTTP_ACCEPT_LANGUAGE http header and sets the I18n.locale based on that"
+  s.description = "Parses HTTP_ACCEPT_LANGUAGE http header and sets the I18n.locale based on that, if it's missing it uses toplevel regional domain suffix or falls back to I18n.default_locale"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

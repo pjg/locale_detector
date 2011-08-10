@@ -39,7 +39,15 @@ describe LocaleDetector::Filter do
 
     specify { set_locale(:host => 'example.br').should eql('pt') }
 
-    specify { set_locale(:host => 'example.com').should eql(LocaleDetector.fallback_locale) }
+  end
+
+  context "default fallback" do
+
+    before do
+      I18n.default_locale = 'de'
+    end
+
+    specify { set_locale(:host => 'example.com').should eql('de') }
 
   end
 

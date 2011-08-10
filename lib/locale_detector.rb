@@ -1,4 +1,3 @@
-require "locale_detector/fallback_locale"
 require "locale_detector/filter"
 require "locale_detector/version"
 

@@ -1,8 +1,10 @@
 # Locale Detector
 
 This Rails gem makes use of the HTTP_ACCEPT_LANGUAGE http header sent by web browsers with every request, to set the `I18n.locale` setting.
-When this fails (for example if there is no such http header - as is the case for Google bot), it will try to determine the locale based on the toplevel domain suffix (so it will set 'de' for the `example.de` domain).
-When both fail, it will fall back to the `LocaleDetector.fallback_locale`, which is 'en' by default and can be overriden in `config/initializers/locale_detector.rb`.
+
+When this fails (for example if there is no such http header - as is the case for Google bot), it will try to determine the locale based on the toplevel domain suffix (so it will set `'de'` for the `example.de` domain).
+
+When both fail, it will fall back to `I18n.default_locale`, which should be set in application’s `config/application.rb` file (and is `'en'` by default).
 
 The HTTP_ACCEPT_LANGUAGE header parser is based on:
 https://github.com/iain/http_accept_language/blob/master/lib/http_accept_language.rb
@@ -11,6 +13,17 @@ https://github.com/iain/http_accept_language/blob/master/lib/http_accept_languag
 ## Requirements
 
 Rails 3.0+
+
+
+## Example
+
+When this gem is installed and someone visits your application using a Polish version of Firefox the following http header will be sent:
+
+```
+HTTP_ACCEPT_LANGUAGE: pl,en-us;q=0.7,en;q=0.3
+```
+
+and the `I18n.locale` will be set to `'pl'`.
 
 
 ## Installation
@@ -31,13 +44,6 @@ and bundle
 
 ```bash
 $ bundle
-```
-
-
-You can optionally overwrite the default fallback locale by creating a `config/initializers/locale_detector.rb` file and set the `fallback_locale` to a new string, for example:
-
-```ruby
-LocaleDetector.fallback_locale = 'pl'
 ```
 
 
