@@ -3,7 +3,7 @@ module LocaleDetector
     extend ActiveSupport::Concern
 
     included do
-      prepend_before_filter :set_locale
+      append_before_filter :set_locale
     end
 
     protected
