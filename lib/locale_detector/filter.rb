@@ -9,16 +9,22 @@ module LocaleDetector
     protected
 
     def set_locale
-      I18n.locale = begin
-        request.env['HTTP_ACCEPT_LANGUAGE'].split(/\s*,\s*/).collect do |l|
-          l += ';q=1.0' unless l =~ /;q=\d+\.\d+$/
-          l.split(';q=')
-        end.sort do |x,y|
-          raise "Incorrect format" unless x.first =~ /^[a-z\-]+$/i
-          y.last.to_f <=> x.last.to_f
-        end.first.first.gsub(/-[a-z]+$/i, '').downcase
-      rescue # rescue (anything) from the malformed (or missing) accept language headers
-        country_to_language(request.host.split('.').last)
+      if session[:language].present?
+        # set locale from session
+        I18n.locale = session[:language]
+      else
+        # set locale from http header or request host
+        I18n.locale = begin
+          request.env['HTTP_ACCEPT_LANGUAGE'].split(/\s*,\s*/).collect do |l|
+            l += ';q=1.0' unless l =~ /;q=\d+\.\d+$/
+            l.split(';q=')
+          end.sort do |x,y|
+            raise "Incorrect format" unless x.first =~ /^[a-z\-]+$/i
+            y.last.to_f <=> x.last.to_f
+          end.first.first.gsub(/-[a-z]+$/i, '').downcase
+        rescue # rescue (anything) from the malformed (or missing) accept language headers
+          country_to_language(request.host.split('.').last)
+        end
       end
     end
 

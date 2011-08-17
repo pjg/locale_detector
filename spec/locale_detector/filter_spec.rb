@@ -5,20 +5,35 @@ describe LocaleDetector::Filter do
   def set_locale(opts = {})
     filter = Object.new.extend(LocaleDetector::Filter)
 
-    request = if opts[:language].present?
+    request =
+      if opts[:language].present?
         double('request', :env => { 'HTTP_ACCEPT_LANGUAGE' => opts[:language] })
-      else
+      elsif opts[:host].present?
         double('request', :env => nil, :host => opts[:host])
       end
 
+    session =
+      if opts[:session_language].present?
+        double('session', :[] => opts[:session_language])
+      else
+        double('session', :[] => '')
+      end
+
+    filter.stub(:session).and_return(session)
     filter.stub(:request).and_return(request)
     filter.send(:set_locale)
+  end
+
+  context "session[:language] locale overwrite" do
+    specify { set_locale(:language => 'pt-BR', :session_language => 'pl').should eql('pl') }
   end
 
   context "http header locale setting" do
     specify { set_locale(:language => 'pl').should eql('pl') }
 
     specify { set_locale(:language => 'pl-PL').should eql('pl') }
+
+    specify { set_locale(:language => 'pt-BR').should eql('pt') }
 
     specify { set_locale(:language => 'pl,en-us;q=0.7,en;q=0.3').should eql('pl') }
 
