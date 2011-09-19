@@ -52,6 +52,11 @@ $ bundle
 ```
 
 
+## Caveats
+
+Locale autodetection is done via a `before_filter` called `set_locale`, which is run before every controller action when you bundle this gem. Beware, that the `set_locale` filter will most likely be run **first**, before your other application defined filters, so if you’d like to update the `session[:language]` in your `before_filter` (to reflect the change of display language by the user) you have to place a call to `set_locale` just after setting the `sessinon[:language]` (also see the notes below on "Turning off the language detection").
+
+
 
 ## Turning off the language autodetection
 
